@@ -1,6 +1,13 @@
+"""
+Scheduler for turned based games.
+"""
+
+__author__ = "Jonathan Kalisch"
+__version__ = "1.1.2"
+
 class Scheduler():
 	"""
-	Scheduler for PyWar piece operations.
+	Scheduler for turn based games.
 	"""
 	def __init__(self):
 		"""
@@ -23,7 +30,7 @@ class Scheduler():
 		"""
 		Stores extra metdata on the queue
 		:param job_id: the job_id
-		:type job_id: Seralizable
+		:type job_id: Serializable
 		:param meta: the metadata to be stored
 		:type meta: object. Not tuple and not list.
 		"""
@@ -53,7 +60,7 @@ class Scheduler():
 		"""
 		Appends task to job_id
 		:param job_id: the job_id
-		:type job_id: Seralizable
+		:type job_id: Serializable
 		:param func: the function to queue
 		:type func: function
 		:param params: a dictionary of params to be passed
@@ -68,7 +75,7 @@ class Scheduler():
 		"""
 		Checks if a job_id has tasks queued
 		:param job_id: the job_id
-		:type job_id: Seralizable
+		:type job_id: Serializable
 		"""
 		return job_id in self.operations.keys()
 		
@@ -76,7 +83,7 @@ class Scheduler():
 		"""
 		Clears the job's queue
 		:param job_id: the job_id
-		:type job_id: Seralizable
+		:type job_id: Serializable
 		"""
 		self.operations.pop(job_id, None)
 	
@@ -110,27 +117,3 @@ class Scheduler():
 			while len(self.operations[job]) > 0 and not isinstance(self.operations[job][0], tuple):
 					self.operations[job].pop(0)
 		self.clean()
-
-class Test():
-	def __init__(self, a):
-		self.a = a
-	
-	def print_a(self):
-		print(self.a)
-		return True
-	
-	def double_print(self, b):
-		lst = []
-		Scheduler.append_to_list(lst, Test.print_a, {}, False)
-		Scheduler.append_to_list(lst, Test.print_ab, {"b": b}, True)
-		return lst
-	
-	def print_ab(self, b):
-		print(self.a, b)
-		return self.a==5
-
-my_scheduler = Scheduler()
-my_scheduler.add(1, Test.double_print, {"b": 9})
-for i in range(10):
-	print(my_scheduler.operations)
-	my_scheduler.run(Test(i))
